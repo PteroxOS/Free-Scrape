@@ -69,3 +69,94 @@ const PinDL = {
 })();
 
 module.exports = PinDL;
+
+
+/** Bonus sama aja sih result url nya 
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+/**
+ * SavePinMedia Downloader Scraper
+ * Engine: HTML Parsing
+ * Owners: AgungDevX
+ */
+const SavePin = {
+    config: {
+        api: 'https://savepinmedia.com/php/api/api.php',
+        baseUrl: 'https://savepinmedia.com',
+        ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    },
+
+    /**
+     * @param {String} url - Link Pinterest
+     */
+    download: async (url) => {
+        try {
+            if (!url) return { status: 400, success: false, owners: "AgungDevX", message: "URL required" };
+
+            const { data } = await axios.get(SavePin.config.api, {
+                params: { url: url },
+                headers: {
+                    'Accept': '*/*',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'User-Agent': SavePin.config.ua,
+                    'Referer': 'https://savepinmedia.com/'
+                }
+            });
+
+            const $ = cheerio.load(data);
+
+            // Ngeruk data tina elemen HTML
+            const result = {
+                author: {
+                    name: $('.info span a').text() || "Unknown",
+                    profile: $('.info span a').attr('href') || "",
+                    avatar: $('.photo img').attr('src') || ""
+                },
+                thumbnail: $('.load-screenshot').css('background')?.match(/url\((.*?)\)/)?.[1] || "",
+                media: []
+            };
+
+            // Ngumpulkeun kabeh link download nu aya
+            $('.button-download a').each((i, el) => {
+                const rawHref = $(el).attr('href');
+                if (rawHref) {
+                    // Meresihan link download (ngaleungitkeun wrapper internal)
+                    const directLink = rawHref.includes('id=') ? decodeURIComponent(rawHref.split('id=')[1]) : SavePin.config.baseUrl + rawHref;
+                    
+                    result.media.push({
+                        url: directLink,
+                        type: directLink.includes('.mp4') ? 'video' : 'image'
+                    });
+                }
+            });
+
+            if (result.media.length === 0) throw new Error("Media not found on this page.");
+
+            return {
+                status: 200,
+                success: true,
+                owners: "AgungDevX",
+                payload: result
+            };
+
+        } catch (err) {
+            return {
+                status: 500,
+                success: false,
+                owners: "AgungDevX",
+                message: err.message
+            };
+        }
+    }
+};
+
+// --- RUN TEST ---
+(async () => {
+    const link = "https://pin.it/5yeybIFUA";
+    const res = await SavePin.download(link);
+    console.log(JSON.stringify(res, null, 2));
+})();
+
+module.exports = SavePin;
+**/
