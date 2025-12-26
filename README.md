@@ -1,6 +1,6 @@
-# 📦 Free-Scrape
+### Free-Scrape
 
-> Kumpulan hasil *scraping* haratis pikeun kaperluan integrasi aplikasi atanapi bot WhatsApp.
+The collection of *scraping* results is very important if you need to integrate the WhatsApp bot application.
 
 ---
 
