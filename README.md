@@ -1,6 +1,6 @@
 ### Free-Scrape
 
-The collection of *scraping* results is very important if you need to integrate the WhatsApp bot application.
+The collection of **scraping** results is very important if you need to integrate the WhatsApp bot application.
 
 Don't Forget to Start & Fork this repository
 ---
