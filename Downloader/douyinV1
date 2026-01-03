@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 /**
- * SnapVideoTools Scraper
+ * SnapVideoTools Scraper 
  * @author AgungDevX
  */
 async function snapScraper(url) {
