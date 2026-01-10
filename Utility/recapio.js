@@ -37,7 +37,7 @@ class RecapioClient {
             );
             return response.data;
         } catch (error) {
-            throw new Error(`Initiate gagal: ${error.message}`);
+            throw new Error(`Initiate failed: ${error.message}`);
         }
     }
 
@@ -56,18 +56,18 @@ class RecapioClient {
             }
             return response.data;
         } catch (error) {
-            throw new Error(`Cek status gagal: ${error.message}`);
+            throw new Error(`Status check failed: ${error.message}`);
         }
     }
 
     async start() {
         try {
-            console.log('Memulai proses...');
+            console.log('Starting process...');
             const init = await this.initiate();
-            console.log('Init berhasil, slug:', init.slug);
+            console.log('Init successful');
 
             const status = await this.checkStatus(init.slug);
-            console.log('Status diperoleh');
+            console.log('Status retrieved');
 
             return {
                 info: init,
@@ -80,7 +80,7 @@ class RecapioClient {
 
     async sendMessage(prompt) {
         try {
-            console.log('Mengirim prompt:', prompt);
+            console.log('Sending prompt...');
 
             const response = await axios.post(
                 `${this.baseUrl}/youtube-chat/message`,
@@ -110,7 +110,7 @@ class RecapioClient {
                             const chunk = JSON.parse(data);
                             result += chunk.chunk || '';
                         }
-                    } catch (error) {
+                    } catch {
                         continue;
                     }
                 }
@@ -118,25 +118,35 @@ class RecapioClient {
 
             return result;
         } catch (error) {
-            throw new Error(`Kirim pesan gagal: ${error.message}`);
+            throw new Error(`Message failed: ${error.message}`);
         }
     }
 
     async getSummary() {
         try {
             const videoData = await this.start();
-            console.log('\nInfo video diperoleh');
 
             const summary = await this.sendMessage(
                 'Extract the most important bullet points from this video, organized in a clear, structured format.'
             );
 
             return {
-                videoInfo: videoData.info,
-                summary: summary
+                success: true,
+                video: {
+                    id: videoData.info.id,
+                    title: videoData.info.title,
+                    duration: videoData.info.duration,
+                    slug: videoData.info.slug,
+                    thumbnail: videoData.info.thumbnail_url
+                },
+                summary: summary.trim(),
+                transcript: videoData.slug_ai.transcript
             };
         } catch (error) {
-            throw error;
+            return {
+                success: false,
+                error: error.message
+            };
         }
     }
 }
@@ -144,24 +154,22 @@ class RecapioClient {
 async function main() {
     try {
         const recapio = new RecapioClient('https://youtube.com/watch?v=2y1OxYwvkhY');
-
-        console.log('Mengambil summary video...');
+        
+        console.log('Fetching video summary...');
         const result = await recapio.getSummary();
 
-        console.log('\n=== VIDEO INFO ===');
-        console.log('Title:', result.videoInfo.title);
-        console.log('Duration:', result.videoInfo.duration);
-        console.log('Slug:', result.videoInfo.slug);
-
-        console.log('\n=== SUMMARY ===');
-        console.log(result.summary);
+        if (result.success) {
+            console.log(JSON.stringify(result, null, 2));
+        } else {
+            console.log(JSON.stringify(result, null, 2));
+        }
 
     } catch (error) {
-        console.error('Error:', error.message);
-        if (error.response) {
-            console.error('Response status:', error.response.status);
-            console.error('Response data:', error.response.data);
-        }
+        const errorResult = {
+            success: false,
+            error: error.message
+        };
+        console.log(JSON.stringify(errorResult, null, 2));
     }
 }
 
