@@ -206,6 +206,7 @@ $ node codeai.js convert kode.py javascript python
 # Jelaskan kode
 $ node codeai.js explain kode.js
 
- */
 # Gambar ke kode
 $ node codeai.js image screenshot.png "perbaiki ini" python
+
+ */
