@@ -13,7 +13,7 @@ const codeAI = {
   },
   
   headers: {
-    'user-agent': 'NB Android/1.0.0',
+    'user-agent': 'AgungDevX Android/1.0.0',
     'content-type': 'application/json',
     'accept': 'application/json'
   },
