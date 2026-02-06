@@ -3,7 +3,7 @@ const CryptoJS = require("crypto-js");
 
 /**
  * MEGA.NZ Professional Scraper
- * @creator @ShiroNexo
+ * @creator AgungDevX
  */
 const mega = {
     // Fungsi dekripsi atribut (ngaran file)
@@ -44,7 +44,7 @@ const mega = {
 
             return {
                 status: true,
-                creator: "@ShiroNexo",
+                creator: "AgungDevX",
                 data: {
                     filename: attr.n,
                     size: info.s,
@@ -53,7 +53,7 @@ const mega = {
                 }
             };
         } catch (err) {
-            return { status: false, creator: "@ShiroNexo", message: err.message };
+            return { status: false, creator: "AgungDevX", message: err.message };
         }
     }
 };
@@ -71,7 +71,7 @@ if (testerUrl.includes("#")) {
 /**
 {
   "status": true,
-  "creator": "@ShiroNexo",
+  "creator": "AgungDevX",
   "data": {
     "filename": "[Decryption Error]",
     "size": 16577997,
