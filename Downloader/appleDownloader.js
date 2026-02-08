@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { zencf } = require('zencf'); // Pake kurung kurawal jiga dokumentasi
+const { zencf } = require('zencf'); 
 
 /**
  * SCRAPER APPLE MUSIC - JSON OUTPUT
